@@ -27,7 +27,25 @@ class InitialTables extends Migration {
 			$table->softDeletes();
 		});
 
-		
+		Schema::create('pages', function(Blueprint $table){
+
+			$table->increments('id');
+			$table->integer('section_id')->unsigned()->nullable;
+			$table->foreign('section_id')->references('id')->on('sections');
+
+			$table->string('title');
+			$table->string('slug_url');
+			$table->tinyInteger('order_num')->unsigned()->default(200);
+			$table->string('body');
+			$table->string('tab_title');
+			$table->mediumText('meta_description')->nullable;
+			$table->boolean('published')->default(false);
+			$table->boolean('featured')->default(false);
+
+			$table->timestamps();
+			$table->timestamp('published_at');
+			$table->softDeletes();
+		});
 	}
 
 	/**
@@ -38,6 +56,7 @@ class InitialTables extends Migration {
 	public function down()
 	{
 		Schema::drop('sections');
+		Schema::drop('pages');
 	}
 
 }
